@@ -1,204 +1,125 @@
-local UserInputService = game:GetService("UserInputService")
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local LBLG = Instance.new("ScreenGui", getParent)
+local LBL = Instance.new("TextLabel", getParent)
+local player = game.Players.LocalPlayer
 
-local function CreateGUI(title)
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "MyGUI"
-    gui.ResetOnSpawn = false
-    gui.DisplayOrder = 10
-    gui.Parent = game.Players.LocalPlayer.PlayerGui
-    local frame = Instance.new("Frame")
-    frame.Name = "MainFrame"
-    frame.BackgroundTransparency = 0
-    frame.BackgroundColor3 = Color3.fromRGB(240, 248, 255)
-    frame.BorderSizePixel = 0
-    frame.Position = UDim2.new(0, 110, 0, -20) 
-    frame.Size = UDim2.new(0, 500, 0, 280)
-    frame.Parent = gui
+LBLG.Name = "LBLG"
+LBLG.Parent = game.CoreGui
+LBLG.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+LBLG.Enabled = true
+LBL.Name = "LBL"
+LBL.Parent = LBLG
+LBL.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+LBL.BackgroundTransparency = 1
+LBL.BorderColor3 = Color3.new(0, 0, 0)
+LBL.Position = UDim2.new(0.75,0,0.010,0)
+LBL.Size = UDim2.new(0, 133, 0, 30)
+LBL.Font = Enum.Font.GothamSemibold
+LBL.Text = "TextLabel"
+LBL.TextColor3 = Color3.new(1, 1, 1)
+LBL.TextScaled = true
+LBL.TextSize = 14
+LBL.TextWrapped = true
+LBL.Visible = true
 
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 10)
-    corner.Parent = frame
+local FpsLabel = LBL
+local Heartbeat = game:GetService("RunService").Heartbeat
+local LastIteration, Start
+local FrameUpdateTable = { }
 
-    local dragging = false
-    local startPos, startOffset
+local function HeartbeatUpdate()
+	LastIteration = tick()
+	for Index = #FrameUpdateTable, 1, -1 do
+		FrameUpdateTable[Index + 1] = (FrameUpdateTable[Index] >= LastIteration - 1) and FrameUpdateTable[Index] or nil
+	end
+	FrameUpdateTable[1] = LastIteration
+	local CurrentFPS = (tick() - Start >= 1 and #FrameUpdateTable) or (#FrameUpdateTable / (tick() - Start))
+	CurrentFPS = CurrentFPS - CurrentFPS % 1
+	FpsLabel.Text = ("北京时间:"..os.date("%H").."时"..os.date("%M").."分"..os.date("%S"))
+end
+Start = tick()
+Heartbeat:Connect(HeartbeatUpdate)
+local Window = OrionLib:MakeWindow({Name = "『丁真脚本』", HidePremium = false, SaveConfig = true,IntroText = "『丁真脚本』", ConfigFolder = "『丁真脚本』"})
 
-    frame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            startPos = input.Position
-            startOffset = frame.Position
-            gui.Active = true 
-        end
-    end)
+game:GetService("StarterGui"):SetCore("SendNotification",{ Title = "丁真脚本"; Text ="吉吉国王"; Duration = 4; })
 
-    frame.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = false
-            startPos = nil
-            startOffset = nil
-            gui.Active = false
-        end
-    end)
+local about = Window:MakeTab({
+    Name = "靓坤",
+    Icon = "rbxassetid://16060333448",
+    PremiumOnly = false
 
-    UserInputService.InputChanged:Connect(function(input)
-        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local delta = input.Position - startPos
-            frame.Position = UDim2.new(startOffset.X.Scale, startOffset.X.Offset + delta.X, startOffset.Y.Scale,  
-                startOffset.Y.Offset + delta.Y)
-        end
-    end)
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Size = UDim2.new(1, 0, 0.05, 0.15 * frame.Size.Y.Offset)
-    titleLabel.Position = UDim2.new(0, 0, 0.01, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Text = title
-    titleLabel.TextColor3 = Color3.new(0, 0, 0)
-    titleLabel.TextSize = math.floor(frame.Size.Y.Offset * 0.1)
-    titleLabel.Parent = frame
-    local disagreeButton = Instance.new("TextButton")
-    disagreeButton.Name = "DisagreeButton"
-    disagreeButton.Size = UDim2.new(0, 0.4 * frame.Size.X.Offset, 0, 0.15 * frame.Size.Y.Offset)
-    disagreeButton.Position = UDim2.new(0, 0.1 * frame.Size.X.Offset, 0,
-        frame.Size.Y.Offset - 0.25 * frame.Size.Y.Offset)
-    disagreeButton.BackgroundTransparency = 0
-    disagreeButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    disagreeButton.Text = "不同意"
-    disagreeButton.TextColor3 = Color3.new(255, 0, 0)
-    disagreeButton.TextSize = math.floor(frame.Size.Y.Offset * 0.08)
-    disagreeButton.Font = Enum.Font.SourceSans
-    disagreeButton.Parent = frame
-    local disagreeCorner = Instance.new("UICorner")
-    disagreeCorner.CornerRadius = UDim.new(0, 10)
-    disagreeCorner.Parent = disagreeButton
-
-    local agreeButton = Instance.new("TextButton")
-    agreeButton.Name = "AgreeButton"
-    agreeButton.Size = UDim2.new(0, 0.4 * frame.Size.X.Offset, 0, 0.15 * frame.Size.Y.Offset)
-    agreeButton.Position = UDim2.new(0, frame.Size.X.Offset - 0.5 * frame.Size.X.Offset, 0,
-        frame.Size.Y.Offset - 0.25 * frame.Size.Y.Offset)
-    agreeButton.BackgroundTransparency = 0
-    agreeButton.BackgroundColor3 = Color3.fromRGB(106, 159, 255)
-    agreeButton.Text = "同意"
-    agreeButton.TextColor3 = Color3.new(255, 255, 255)
-    agreeButton.TextSize = math.floor(frame.Size.Y.Offset * 0.08)
-    agreeButton.Font = Enum.Font.SourceSans 
-    agreeButton.Parent = frame
-
-    
-    local agreeFrame = Instance.new("TextLabel")
-    agreeFrame.Size = UDim2.new(0.8, 0, 0.5, 0)
-    agreeFrame.Position = UDim2.new(0.1, 0, 0.22, 0)
-    agreeFrame.BackgroundColor3 = Color3.fromRGB(240, 240, 240)
-    agreeFrame.Text = "感谢帅哥使用黑洞脚本 加入QQ群856201787获取更多群主制作脚本🤨🙂🤓🤓🤓🙂🤨"
-    agreeFrame.TextWrapped = true
-
-    
-    agreeFrame.TextSize = 16  
-
-
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 10)
-    corner.Parent = agreeFrame
-
-    agreeFrame.Parent = frame
-
-    local agreeCorner = Instance.new("UICorner")
-    agreeCorner.CornerRadius = UDim.new(0, 10)
-    agreeCorner.Parent = agreeButton
-    local minimizeButton = Instance.new("TextButton")
-    minimizeButton.Name = "MinimizeButton"
-    minimizeButton.Size = UDim2.new(0, 40, 0, 40)
-    minimizeButton.Position = UDim2.new(1, -65, 0, 10)
-    minimizeButton.BackgroundTransparency = 0
-    minimizeButton.BackgroundColor3 = Color3.fromRGB(199, 199, 199)
-    minimizeButton.Text = "-"
-    minimizeButton.TextSize = 28  
-    minimizeButton.TextColor3 = Color3.new(0, 0, 0)
-    minimizeButton.Font = Enum.Font.SourceSans
-    minimizeButton.Parent = frame
-
-    local isMinimized = false
-
-    local minimizeCorner = Instance.new("UICorner")
-    minimizeCorner.CornerRadius = UDim.new(0, 5)
-    minimizeCorner.Parent = minimizeButton
-
-    minimizeButton.MouseButton1Click:Connect(function()
-        if isMinimized then
-            frame.Size = UDim2.new(0, 500, 0, 280)
-            titleLabel.Position = UDim2.new(0, 0, 0.01, 0)
-            minimizeButton.Text = "-"
-            minimizeButton.TextSize = 28
-            isMinimized = false
-            disagreeButton.Visible = true
-            agreeButton.Visible = true
-            agreeFrame.Visible = true
-        else
-            frame.Size = UDim2.new(0, 500, 0, 60)
-            titleLabel.Position = UDim2.new(0, 0, 0, 0)
-            minimizeButton.Text = "+"
-            minimizeButton.TextSize = 28 
-            isMinimized = true
-            disagreeButton.Visible = false
-            agreeButton.Visible = false
-            agreeFrame.Visible = false
-        end
-    end)
-
-    local function AnimateExit()
-        local duration = 1
-        local startTime = tick()
-        local initialSize = frame.Size
-        while (tick() - startTime) < duration do
-            local elapsedTime = tick() - startTime
-            local scale = 1 - elapsedTime / duration
-            frame.Size = UDim2.new(initialSize.X.Scale * scale, initialSize.X.Offset * scale,
-                initialSize.Y.Scale * scale, initialSize.Y.Offset * scale)
-            frame.Position = frame.Position + UDim2.new((1 - scale) / 2, 0, (1 - scale) / 2, 0)
-            wait()
-        end
-        gui:Destroy()
-    end
-    disagreeButton.MouseButton1Click:Connect(function()
-        AnimateExit()
-    end)
-    agreeButton.MouseButton1Click:Connect(function()
-        AnimateExit()
-local CoreGui = game:GetService("StarterGui")
-
-CoreGui:SetCore("SendNotification", {
-    Title = "确认身份",
-    Text = "正在验证....",
-    Duration = 3, 
-    wait(3)
 })
 
-local StarterGui = game:GetService("StarterGui")
-local Players = game:GetService("Players")
-local WhitelistedPlayers = {
-    ["ownzisn"] = true,
-    ["eogvjsmso"] = true,
-}
+about:AddParagraph("作者QQ群856201787")
+about:AddParagraph("qq群856201787")
+about:AddParagraph("作者靓坤")
+about:AddParagraph("顶尖脚本集")
 
-local function IsWhitelisted(player)
-    return WhitelistedPlayers[player.Name] or false
-end
+local Tab =Window:MakeTab({
 
-local localPlayer = Players.LocalPlayer
+	Name = "作者QQ群这里",
 
-local isLocalPlayerWhitelisted = IsWhitelisted(localPlayer)
+	Icon = "rbxassetid://16060333448",
 
-if isLocalPlayerWhitelisted then
-    StarterGui:SetCore("SendNotification", {
-        Title = "白名单认证",
-        Text = "玩家:"..localPlayer.Name.."，检测完毕尊贵的白名单玩家，稍后会加载脚本",
-        Duration = 7,
-    })
-loadstring("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\120\99\109\115\110\100\47\120\99\109\115\110\100\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\54\46\108\117\97\34\41\41\40\41")()
-else
-    localPlayer:Kick("你没有被加入白名单 请加QQ856201787向群主索要")
-    end)
-end
-local myTitle = "黑洞协议" 
-CreateGUI(myTitle)
+	PremiumOnly = false
+
+})
+
+Tab:AddButton({
+
+	Name = "复制作者QQ群",
+
+	Callback = function()
+
+     setclipboard("856201787")
+
+  	end
+
+})
+
+Tab:AddButton({
+
+	Name = "复制QQ群",
+
+	Callback = function()
+
+     setclipboard("856201787")
+
+  	end
+
+})
+
+OrionLib:MakeNotification({
+	Name = "靓坤",
+	Content = "欢迎使用顶尖脚本",
+	Image = "rbxassetid://16060333448",
+	Time = 2
+
+})
+
+local Tab = Window:MakeTab({
+	Name = "所有黑洞脚本",
+	Icon = "rbxassetid://16060333448",
+	PremiumOnly = false
+})
+
+Tab:AddButton({
+	Name = "好看黑洞脚本",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/9pUE0ywA"))()
+    end
+})
+
+Tab:AddButton({
+	Name = "环形黑洞",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/BOOSBS/666/refs/heads/main/656"))()
+    end
+})
+
+Tab:AddButton({
+	Name = "彩虹黑洞脚本",
+	Callback = function()
+loadstring(game:HttpGet("https://pastebin.com/raw/LHsrytuj"))()
+    end
+})
