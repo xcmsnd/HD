@@ -24,6 +24,60 @@ about:AddParagraph("您的用户名:"," "..game.Players.LocalPlayer.Name.."")
 about:AddParagraph("您的注入器:"," "..identifyexecutor().."")
 about:AddParagraph("您当前服务器的ID"," "..game.GameId.."")
 
+local about = Window:MakeTab({
+    Name = "靓坤",
+    Icon = "rbxassetid://16060333448",
+    PremiumOnly = false
+
+})
+
+about:AddParagraph("作者QQ群856201787")
+about:AddParagraph("qq群856201787")
+about:AddParagraph("作者靓坤")
+about:AddParagraph("顶尖脚本集")
+
+local Tab =Window:MakeTab({
+
+	Name = "作者QQ群这里",
+
+	Icon = "rbxassetid://16060333448",
+
+	PremiumOnly = false
+
+})
+
+Tab:AddButton({
+
+	Name = "复制作者QQ群",
+
+	Callback = function()
+
+     setclipboard("856201787")
+
+  	end
+
+})
+
+Tab:AddButton({
+
+	Name = "复制QQ群",
+
+	Callback = function()
+
+     setclipboard("856201787")
+
+  	end
+
+})
+
+OrionLib:MakeNotification({
+	Name = "靓坤",
+	Content = "欢迎使用顶尖脚本",
+	Image = "rbxassetid://16060333448",
+	Time = 2
+
+})
+
 local Tab = Window:MakeTab({
 	Name = "超级多黑洞脚本",
 	Icon = "rbxassetid://16060333448",
