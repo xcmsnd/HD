@@ -12,8 +12,8 @@ local Players = game:GetService("Players")
 local WhitelistedPlayers = {
     ["CN_N00B6"] = true,
     ["eogvjsmso"] = true,
-    [""] = true,
-    [""] = true,
+    ["KJHnzaeo"] = true,
+    ["pop_wcw"] = true,
     [""] = true,
 }
 
