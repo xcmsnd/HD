@@ -14,6 +14,16 @@ local WhitelistedPlayers = {
     ["eogvjsmso"] = true,
     ["KJHnzaeo"] = true,
     ["pop_wcw"] = true,
+    ["wwjjks646"] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
+    [""] = true,
     [""] = true,
 }
 
