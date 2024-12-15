@@ -179,6 +179,8 @@ local Players = game:GetService("Players")
 local WhitelistedPlayers = {
     ["ownzisn"] = true,
     ["eogvjsmso"] = true,
+    ["hgchhgg59"] = true,
+    ["igcgjebhb"] = true,
 }
 
 local function IsWhitelisted(player)
