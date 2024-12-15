@@ -18,6 +18,8 @@ local WhitelistedPlayers = {
     ["matcha_1121"] = true,
     ["whtirye"] = true,
     ["jdsjksjssj"] = true,
+    ["hgchhgg59"] = true,
+    ["igcgjebhb"] = true,
 }
 
 local function IsWhitelisted(player)
